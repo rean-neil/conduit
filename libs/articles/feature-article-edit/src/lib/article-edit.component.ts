@@ -54,7 +54,9 @@ export class ArticleEditComponent implements OnInit, OnDestroy {
     this.store
       .select(articleQuery.selectData)
       .pipe(untilDestroyed(this))
-      .subscribe((article) => this.store.dispatch(formsActions.setData({ data: article })));
+      .subscribe((article) => {
+        this.store.dispatch(formsActions.setData({ data: { ...article, tagList: article.tagList.join(',') } }));
+      });
   }
 
   updateForm(changes: any) {

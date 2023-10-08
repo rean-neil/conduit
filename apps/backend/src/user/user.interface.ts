@@ -9,3 +9,8 @@ export interface IUserData {
 export interface IUserRO {
   user: IUserData;
 }
+
+export interface IUsersRO {
+  users: any[];
+  userCount: number;
+}

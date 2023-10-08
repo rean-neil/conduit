@@ -8,6 +8,7 @@ import { Article } from './article.entity';
 import { IArticleRO, IArticlesRO, ICommentsRO } from './article.interface';
 import { Comment } from './comment.entity';
 import { CreateArticleDto, CreateCommentDto } from './dto';
+import { Tag } from '../tag/tag.entity';
 
 @Injectable()
 export class ArticleService {
@@ -154,8 +155,14 @@ export class ArticleService {
       { populate: ['followers', 'favorites', 'articles'] },
     );
     const article = new Article(user!, dto.title, dto.description, dto.body);
-    article.tagList.push(...dto.tagList);
+    const copy: any = dto.tagList;
+    article.tagList = copy.split(',').map((word: string) => word.trim());
     user?.articles.add(article);
+    for (const tagName of article.tagList) {
+      const tag = new Tag();
+      tag.tag = tagName;
+      this.em.persist(tag);
+    }
     await this.em.flush();
 
     return { article: article.toJSON(user!) };

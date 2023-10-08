@@ -6,8 +6,9 @@ import { EntityManager, wrap } from '@mikro-orm/core';
 import { SECRET } from '../config';
 import { CreateUserDto, LoginUserDto, UpdateUserDto } from './dto';
 import { User } from './user.entity';
-import { IUserRO } from './user.interface';
+import { IUserRO, IUsersRO } from './user.interface';
 import { UserRepository } from './user.repository';
+import { Article } from '../article/article.entity';
 
 @Injectable()
 export class UserService {
@@ -113,5 +114,56 @@ export class UserService {
     };
 
     return { user: userRO };
+  }
+
+  async getUsersWithArticleStats(): Promise<User[]> {
+    const connection = this.em.getConnection();
+    const query = `
+      SELECT
+        u.*,
+        COUNT(a.id) AS totalArticles,
+        SUM(a.favorites_count) AS totalLikes,
+        MIN(a.created_at) AS firstArticleDate
+      FROM
+        user u
+      LEFT JOIN
+        article a ON u.id  = a.author_id
+      GROUP BY
+        u.id
+      ORDER BY
+        totalLikes DESC;
+    `;
+
+    const results = await connection.execute(query);
+    return results;
+  }
+
+  async getUsersWithArticleStats2(): Promise<any> {
+    const users = await this.userRepository.findAll();
+    const list  = users.map((user) => {return {...user}});
+
+    const userWithArticleData = await Promise.all(
+      list.map(async (user) => {
+        const articles: any = await this.em.find(Article, { author: user.id });
+        const article_list: any = articles.map((user: any) => {return {...user}});
+        const articleCount = article_list.length;
+        const likesReceived = articles.reduce(
+          (totalLikes: number, article: any) => totalLikes + article.favoritesCount,
+          0
+        );
+        const firstArticleDate = article_list.length
+          ? article_list[0].createdAt
+          : '';
+
+        return {
+          user,
+          articleCount,
+          likesReceived,
+          firstArticleDate,
+        };
+      })
+    );
+
+    return userWithArticleData.sort((a, b) => b.likesReceived - a.likesReceived);
   }
 }

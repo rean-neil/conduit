@@ -1,0 +1,59 @@
+/* Styles for the user list container */
+.user-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+}
+
+/* Styles for individual user items */
+.user {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles for user name links */
+.user-name {
+  font-weight: bold;
+  text-decoration: none;
+  color: #007bff;
+  margin-bottom: 5px;
+}
+
+.user-data {
+  display: flex;
+  flex-direction: column;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Styles for individual data items */
+.user-data span {
+  margin: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Style for the "N/A" text */
+.user-data span:empty::before {
+  content: 'N/A';
+  color: #999;
+  font-style: italic;
+}
+
+/* Style for the total likes received */
+.user-data span.likes-received {
+  color: #ff6347; /* Tomato red color */
+}
+
+/* Style for the date of first article */
+.user-data span.date-of-first-article {
+  color: #008000; /* Green color */
+}

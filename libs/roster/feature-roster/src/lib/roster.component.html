@@ -1,0 +1,36 @@
+<div class="home-page">
+  <div class="banner">
+    <div class="container">
+      <h1 class="logo-font">Conduit Roster</h1>
+    </div>
+  </div>
+
+  <div class="container page">
+    <div class="user-list">
+      <div class="user" *ngFor="let user of users">
+        <div>
+          <div class="article-meta">
+          <div class="user-info">
+            <a>
+              <img [src]="user.image" />
+            </a>
+            <div class="info">
+              <a data-e2e-id="article-author" class="author" [routerLink]="['/profile', user.username]">
+                {{ user.username }}
+              </a>
+              <span class="date">
+                {{ user.firstArticleDate | date : 'longDate' }}
+              </span>
+            </div>
+            <div class="user-data">
+              <span>Total Likes Received: {{ user.totalLikes || '0' }}</span>
+              <span>Total Articles Authored: {{ user.totalArticles }}</span>
+              <span>Date of First Article: {{ user.firstArticleDate | date : 'longDate' }}</span>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

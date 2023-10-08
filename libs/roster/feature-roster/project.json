@@ -1,0 +1,24 @@
+{
+  "name": "roster-feature-roster",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/roster/feature-roster/src",
+  "prefix": "cdt",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/roster/feature-roster"],
+      "options": {
+        "jestConfig": "libs/roster/feature-roster/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/roster/feature-roster/src/**/*.ts", "libs/roster/feature-roster/src/**/*.html"]
+      }
+    }
+  },
+  "tags": []
+}
